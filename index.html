@@ -379,22 +379,17 @@ function renderChapterSummary(){
     }
 
     function renderAds(){
-  const wrap = document.getElementById("adGrid");
-  wrap.innerHTML = chapterCounts.map(item => `
-    <div class="mini-card">
-      <div class="mini-top">
-        <div>
-          <div class="mini-title">${item.chapter} 지역광고</div>
-          <div class="mini-sub">광고 · 협찬 · 안내</div>
-        </div>
-        <div class="mini-badge">준비중</div>
-      </div>
-    </div>
-  `).join("");
-}\')" style="cursor:pointer;">
-        <div class="ad-card">
-          <div class="ad-title">${text(item.chapter)} 지역광고</div>
-          <div class="ad-sub">해당 지회 광고 및 협찬 영역입니다. 이 영역에 ${text(item.chapter)} 지회의 협찬, 비즈니스 광고, 행사 공지를 넣을 수 있습니다.</div>
+      const wrap = document.getElementById("adGrid");
+      wrap.innerHTML = chapterCounts.map(item => `
+        <div class="mini-card" onclick="goChapter(\'${item.chapter}\')" style="cursor:pointer;">
+        <div class="mini-card">
+          <div class="mini-top">
+            <div>
+              <div class="mini-title">${text(item.chapter)} 지역광고</div>
+              <div class="mini-sub">광고 · 협찬 · 행사 공지 자리</div>
+            </div>
+            <div class="mini-badge">준비중</div>
+          </div>
         </div>
       `).join("");
     }
