@@ -104,7 +104,7 @@
     .pill.active{background:var(--softblue);color:var(--navy);border-color:#cfd8ef;font-weight:700}
     .chapter-grid,.ad-grid,.history-grid,.pres-grid{display:grid;gap:14px}
     .chapter-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-    .ad-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .ad-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
     .history-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
     .pres-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
     .mini-card,.ad-card,.history-card,.pres-card{
@@ -379,9 +379,19 @@ function renderChapterSummary(){
     }
 
     function renderAds(){
-      const wrap = document.getElementById("adGrid");
-      wrap.innerHTML = chapterCounts.map(item => `
-        <div class="mini-card" onclick="goChapter(\'${item.chapter}\')" style="cursor:pointer;">
+  const wrap = document.getElementById("adGrid");
+  wrap.innerHTML = chapterCounts.map(item => `
+    <div class="mini-card">
+      <div class="mini-top">
+        <div>
+          <div class="mini-title">${item.chapter} 지역광고</div>
+          <div class="mini-sub">광고 · 협찬 · 안내</div>
+        </div>
+        <div class="mini-badge">준비중</div>
+      </div>
+    </div>
+  `).join("");
+}\')" style="cursor:pointer;">
         <div class="ad-card">
           <div class="ad-title">${text(item.chapter)} 지역광고</div>
           <div class="ad-sub">해당 지회 광고 및 협찬 영역입니다. 이 영역에 ${text(item.chapter)} 지회의 협찬, 비즈니스 광고, 행사 공지를 넣을 수 있습니다.</div>
