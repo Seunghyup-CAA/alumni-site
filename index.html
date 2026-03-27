@@ -1,42 +1,612 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>동문 주소록 미리보기</title>
-<style>
-body{font-family:Arial;padding:20px;background:#f5f6fa}
-.card{background:#fff;border-radius:12px;padding:16px;margin:10px 0;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
-.name{font-size:18px;font-weight:bold}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>중앙대학교 북미주 동문회 주소록</title>
+  <meta name="description" content="중앙대학교 북미주 동문회 주소록" />
+  <style>
+    :root {
+      --bg: #f4f4f1;
+      --paper: #fffdf8;
+      --card: #fffefb;
+      --line: #d9d2c4;
+      --text: #26231d;
+      --muted: #6b655b;
+      --navy: #243f73;
+      --navy2: #345792;
+      --gold: #a98a4d;
+      --soft: #f2eee5;
+      --shadow: 0 8px 24px rgba(56, 46, 23, 0.06);
+      --radius: 18px;
+      --maxw: 1120px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(255,253,248,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+    .inner {
+      width: min(var(--maxw), calc(100vw - 24px));
+      margin: 0 auto;
+    }
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      min-height: 66px;
+      padding: 0 4px;
+    }
+    .brand-wrap {
+      min-width: 0;
+    }
+    .brand {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #1f2d4d;
+    }
+    .brand-sub {
+      margin-top: 2px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .nav-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .nav-btn {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 9px 13px;
+      font-size: 0.84rem;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .nav-btn.primary {
+      background: var(--navy);
+      color: white;
+      border-color: var(--navy);
+    }
+
+    .hero {
+      padding: 18px 0 12px;
+    }
+    .hero-card {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+      color: white;
+      border-radius: 26px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .hero-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .hero-title {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.25;
+      letter-spacing: -0.035em;
+      font-weight: 800;
+    }
+    .hero-text {
+      margin: 0;
+      max-width: 760px;
+      color: rgba(255,255,255,0.9);
+      font-size: 0.98rem;
+    }
+    .crest {
+      min-width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.18);
+      display: grid;
+      place-items: center;
+      color: rgba(255,255,255,0.92);
+      font-size: 0.82rem;
+      text-align: center;
+      padding: 10px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .stat {
+      background: rgba(255,255,255,0.11);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 14px 16px;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.82);
+      margin-bottom: 4px;
+    }
+    .stat-value {
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      margin: 14px 0 18px;
+    }
+    .panel-title {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      color: #24324d;
+      font-weight: 700;
+    }
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 1.7fr 0.9fr 0.9fr 0.8fr;
+      gap: 10px;
+    }
+    input[type="text"], select {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 14px;
+      padding: 12px 13px;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .pill {
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
+    .pill.active {
+      background: #eef3ff;
+      color: var(--navy);
+      border-color: #cfd8ef;
+      font-weight: 700;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0 12px;
+    }
+    .section-title {
+      margin: 0;
+      font-size: 1.5rem;
+      letter-spacing: -0.03em;
+      color: #1f2d4d;
+    }
+    .section-count {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      padding-bottom: 28px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .name-kr {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #202530;
+    }
+    .name-en {
+      margin-top: 3px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .chapter-tag {
+      background: #edf2fb;
+      color: var(--navy);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 0.77rem;
+      font-weight: 700;
+      white-space: nowrap;
+      border: 1px solid #d6e0f4;
+    }
+    .quick-actions {
+      display: flex;
+      gap: 8px;
+      margin: 8px 0 12px;
+      flex-wrap: wrap;
+    }
+    .small-btn {
+      display: inline-block;
+      text-decoration: none;
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: var(--soft);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.76rem;
+    }
+    .meta {
+      display: grid;
+      gap: 7px;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      gap: 10px;
+      font-size: 0.9rem;
+      align-items: start;
+    }
+    .label {
+      color: var(--muted);
+    }
+    .value a {
+      color: var(--navy2);
+      text-decoration: none;
+      word-break: break-all;
+    }
+    .empty {
+      display: none;
+      background: var(--paper);
+      border: 1px dashed var(--line);
+      border-radius: 18px;
+      padding: 34px 20px;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .footer {
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 6px 0 26px;
+    }
+
+    @media (max-width: 980px) {
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .filter-grid { grid-template-columns: 1fr 1fr; }
+      .hero-title { font-size: 1.7rem; }
+    }
+    @media (max-width: 640px) {
+      body { font-size: 14px; }
+      .inner { width: min(var(--maxw), calc(100vw - 14px)); }
+      .topbar-inner {
+        min-height: 58px;
+        padding: 6px 2px;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .nav-actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+      .nav-btn {
+        padding: 7px 11px;
+        font-size: 0.78rem;
+      }
+      .hero {
+        padding-top: 10px;
+      }
+      .hero-card {
+        border-radius: 20px;
+        padding: 16px;
+      }
+      .hero-top {
+        flex-direction: column;
+      }
+      .crest {
+        display: none;
+      }
+      .hero-title {
+        font-size: 1.42rem;
+        margin-bottom: 6px;
+      }
+      .hero-text {
+        font-size: 0.88rem;
+      }
+      .stats {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .stat {
+        padding: 11px 13px;
+      }
+      .stat-value {
+        font-size: 1.45rem;
+      }
+      .panel {
+        border-radius: 18px;
+        padding: 12px;
+        margin: 10px 0 14px;
+      }
+      .filter-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      input[type="text"], select {
+        font-size: 0.88rem;
+        padding: 10px 11px;
+      }
+      .pill-row {
+        gap: 6px;
+        margin-top: 10px;
+      }
+      .pill {
+        padding: 7px 10px;
+        font-size: 0.78rem;
+      }
+      .section-title {
+        font-size: 1.22rem;
+      }
+      .section-count {
+        font-size: 0.82rem;
+      }
+      .cards {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .card {
+        border-radius: 18px;
+        padding: 13px;
+      }
+      .name-kr {
+        font-size: 0.98rem;
+      }
+      .name-en {
+        font-size: 0.82rem;
+      }
+      .chapter-tag {
+        font-size: 0.72rem;
+        padding: 6px 9px;
+      }
+      .row {
+        grid-template-columns: 58px 1fr;
+        gap: 8px;
+        font-size: 0.84rem;
+      }
+      .footer {
+        font-size: 0.75rem;
+      }
+    }
+  </style>
 </head>
 <body>
-<h2>동문 주소록 (미리보기)</h2>
-<input id="search" placeholder="검색" style="width:100%;padding:10px;margin-bottom:15px">
-<div id="list"></div>
-
-<script>
-const data = [{"id": 1, "chapter": "Washington", "name_kr": "김 용국", "name_en": "", "address": "", "phone": "703-916-0420", "email": "alexyongkim@hotmail.com", "college": "", "major": "정치외교", "grad_year": "1984", "immigration_year": ""}, {"id": 2, "chapter": "Washington", "name_kr": "김 은주", "name_en": "", "address": "", "phone": "703-946-9061", "email": "eunice1962@hanmail.net", "college": "", "major": "연극영화", "grad_year": "1981", "immigration_year": ""}, {"id": 3, "chapter": "Washington", "name_kr": "김 태미", "name_en": "", "address": "10412 Pearl St.Fairfax, VA 22032", "phone": "571-340-8905", "email": "taemeekim@gmail.com", "college": "", "major": "약학", "grad_year": "1986", "immigration_year": "2002"}, {"id": 4, "chapter": "Washington", "name_kr": "김 재연", "name_en": "Jae Youn Kim", "address": "7545 Red Hill Dr., Springfield VA 22153", "phone": "703-863-9220", "email": "jykim@law.gwu.edu", "college": "공대", "major": "기계공학", "grad_year": "1990", "immigration_year": "2007"}, {"id": 5, "chapter": "Washington", "name_kr": "나 종윤", "name_en": "", "address": "", "phone": "703-727-0752", "email": "chong.na@gmail.com", "college": "", "major": "전자공학", "grad_year": "1988", "immigration_year": ""}, {"id": 6, "chapter": "Washington", "name_kr": "박 영관", "name_en": "Young Kwan Park", "address": "1342 Rock Chapel Road, Herndon,VA 20170", "phone": "703-470-6615", "email": "pkyoung123@yahoo.com", "college": "농대", "major": "식품가공학", "grad_year": "1981", "immigration_year": ""}, {"id": 7, "chapter": "Washington", "name_kr": "박 우수", "name_en": "", "address": "", "phone": "703-946-9061", "email": "hug4cho@gmail.com", "college": "", "major": "체육교육", "grad_year": "1983", "immigration_year": ""}, {"id": 8, "chapter": "Washington", "name_kr": "박 주성", "name_en": "", "address": "13432 Pearson Valley Ln Centreville, VA 20120", "phone": "703-615-5361", "email": "cfc1966@gmail.com", "college": "", "major": "의학", "grad_year": "1985", "immigration_year": ""}, {"id": 9, "chapter": "Washington", "name_kr": "박 선희", "name_en": "", "address": "3042 Winter Pine Ct. Fairfax, VA 22031", "phone": "703-409-3065", "email": "dansonergy@gmail.com", "college": "", "major": "무용", "grad_year": "1980", "immigration_year": ""}, {"id": 10, "chapter": "Washington", "name_kr": "신 태현", "name_en": "", "address": "", "phone": "571-212-2922", "email": "taehyunshin@gmail.com", "college": "예술대학", "major": "사진학과", "grad_year": "1985", "immigration_year": ""}, {"id": 11, "chapter": "Washington", "name_kr": "윤 세미 ", "name_en": "", "address": "", "phone": "202-379-6704", "email": "", "college": "", "major": "영어영문", "grad_year": "2006", "immigration_year": ""}, {"id": 12, "chapter": "Washington", "name_kr": "이 관준", "name_en": "", "address": "", "phone": "703-531-9233", "email": "econoacct@gmail.com", "college": "", "major": "경영학", "grad_year": "1994", "immigration_year": ""}, {"id": 13, "chapter": "Washington", "name_kr": "이 규용", "name_en": "", "address": "", "phone": "213-718-0536", "email": "kyuyong812@yahoo.com", "college": "", "major": "생물학", "grad_year": "1987", "immigration_year": ""}, {"id": 14, "chapter": "Washington", "name_kr": "이 병한", "name_en": "", "address": "6333 Shirey Lane, Centreville, VA 20121", "phone": "571-245-6097", "email": "bhjoshualee@msn.com", "college": "", "major": "독어독문학", "grad_year": "1982", "immigration_year": ""}, {"id": 15, "chapter": "Washington", "name_kr": "이 신욱", "name_en": "", "address": "", "phone": "571-499-1032", "email": "shinwookyi@gmail.com", "college": "", "major": "경제학", "grad_year": "1992", "immigration_year": ""}, {"id": 16, "chapter": "Washington", "name_kr": "이 영신", "name_en": "", "address": "8362 Pedigrue Ct., Gainesville VA 20120", "phone": "703-628-2175", "email": "salangni7@gmail.com", "college": "", "major": "약학", "grad_year": "1985", "immigration_year": ""}, {"id": 17, "chapter": "Washington", "name_kr": "이 은희", "name_en": "", "address": "", "phone": "571-7308419", "email": "eun0717@yahoo.com", "college": "", "major": "간호학", "grad_year": "1982", "immigration_year": ""}, {"id": 18, "chapter": "Washington", "name_kr": "이 상섭", "name_en": "Sang Seob Lee ", "address": "10808 Mantilla Ct., Oakton, VA 22124", "phone": "703-772-0781", "email": "kkykky3395@gmail.com", "college": "", "major": "시각디자인 공예학과", "grad_year": "1986", "immigration_year": "2000"}, {"id": 19, "chapter": "Washington", "name_kr": "이 형렬", "name_en": "Hyeongyeol Edward Lee", "address": "12312 Pawleys Mill Cir., Raleigh NC 27614", "phone": "919-491-5849", "email": "zidane.unc@gmail.com", "college": "", "major": "경영학", "grad_year": "2001", "immigration_year": ""}, {"id": 20, "chapter": "Washington", "name_kr": "이 효열", "name_en": "", "address": "", "phone": "757-650-0248", "email": "", "college": "", "major": "건축공학", "grad_year": "1981", "immigration_year": ""}, {"id": 21, "chapter": "Washington", "name_kr": "임 동일", "name_en": "", "address": "5422 Gladewright Dr., Centreville, VA  20120", "phone": "703-200-7403  ", "email": "danielim6670@yahoo.com", "college": "", "major": "연극영화", "grad_year": "1984", "immigration_year": ""}, {"id": 22, "chapter": "Washington", "name_kr": "장 혜선", "name_en": "", "address": "", "phone": "703-895-1655", "email": "heasun.jang@gmail.com", "college": "", "major": "무용", "grad_year": "1980", "immigration_year": ""}, {"id": 23, "chapter": "Washington", "name_kr": "전    미", "name_en": "", "address": "", "phone": "703-946-6463", "email": "emmikimjun63@hotmail.com", "college": "", "major": "음악(첼로)", "grad_year": "1983", "immigration_year": ""}, {"id": 24, "chapter": "Washington", "name_kr": "전 양수", "name_en": "", "address": "", "phone": "703-200-2579", "email": "j.goodcpa@gmail.com", "college": "", "major": "일어일문학", "grad_year": "1982", "immigration_year": ""}, {"id": 25, "chapter": "Washington", "name_kr": "전 재균", "name_en": "Jaekyun Jun", "address": "3209 Spring Dr., Alexandria, VA 22306", "phone": "703-944-7937", "email": "tkmasters@yahoo.com", "college": "", "major": "심리학", "grad_year": "1991", "immigration_year": "1997"}, {"id": 26, "chapter": "Washington", "name_kr": "정 세진", "name_en": "", "address": "210 East Fairfax St. #319, Falls Church ,VA 22046", "phone": "703-477-1452", "email": "kopriusa@yahoo.com", "college": "", "major": "정치외교", "grad_year": "1983", "immigration_year": ""}, {"id": 27, "chapter": "Washington", "name_kr": "정 수복", "name_en": "Su Bok Jeong", "address": "6466 Manhasset Lane, Alexandria, VA 22312", "phone": "703-473-6411", "email": "sbjeong65@yahoo.com", "college": "", "major": "정경대학 경제학", "grad_year": "1986", "immigration_year": "2005"}, {"id": 28, "chapter": "Washington", "name_kr": "정 희정", "name_en": "", "address": "", "phone": "703-835-0654", "email": "heejung0120@gmail.com", "college": "", "major": "관현악", "grad_year": "1999", "immigration_year": ""}, {"id": 29, "chapter": "Washington", "name_kr": "주 정민", "name_en": "", "address": "", "phone": "703-401-2030", "email": "poppins70@hotmail.com", "college": "", "major": "문헌정보", "grad_year": "1989", "immigration_year": ""}, {"id": 30, "chapter": "Washington", "name_kr": "진 경희", "name_en": "", "address": "", "phone": "703-473-5562", "email": "", "college": "", "major": "영어학", "grad_year": "1986", "immigration_year": ""}, {"id": 31, "chapter": "Washington", "name_kr": "최 성준", "name_en": "", "address": "", "phone": "240-515-1069", "email": "tank12joon@hanmail.net", "college": "", "major": "연극영화", "grad_year": "1984", "immigration_year": ""}];
-
-function render(filter=""){
-  const list = document.getElementById("list");
-  const q = filter.toLowerCase();
-  list.innerHTML = data.filter(d=> 
-    (d.name_kr||"").toLowerCase().includes(q) ||
-    (d.name_en||"").toLowerCase().includes(q)
-  ).map(d=>`
-    <div class="card">
-      <div class="name">${d.name_kr||""} (${d.name_en||""})</div>
-      <div>${d.phone||""}</div>
-      <div>${d.email||""}</div>
-      <div>${d.address||""}</div>
+  <header class="topbar">
+    <div class="inner topbar-inner">
+      <div class="brand-wrap">
+        <div class="brand">중앙대학교 북미주 동문회 주소록</div>
+        <div class="brand-sub">전통과 연결을 위한 동문 명부</div>
+      </div>
+      <div class="nav-actions">
+        <a class="nav-btn" href="#filters">찾기</a>
+        <a class="nav-btn" href="#list">동문목록</a>
+        <button class="nav-btn primary" onclick="window.scrollTo({top:0,behavior:'smooth'})">맨 위로</button>
+      </div>
     </div>
-  `).join("");
-}
+  </header>
 
-document.getElementById("search").addEventListener("input",(e)=>render(e.target.value));
+  <main class="inner">
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-top">
+          <div>
+            <h1 class="hero-title">동문 정보를 한 곳에서 차분하게 찾을 수 있는 주소록</h1>
+            <p class="hero-text">북미주 동문회 자료를 바탕으로 정리한 주소록입니다. 이름, 영어 이름, 연락처, 전공, 졸업년도, 지회별 조회가 가능하도록 단정한 형식으로 구성했습니다.</p>
+          </div>
+          <div class="crest">CAU<br>Alumni</div>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">전체 동문 수</div>
+            <div class="stat-value" id="totalCount">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">등록 지회 수</div>
+            <div class="stat-value" id="chapterCount">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">표시 결과</div>
+            <div class="stat-value" id="resultCount">0</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-render();
-</script>
+    <section id="filters" class="panel">
+      <h2 class="panel-title">동문 찾기</h2>
+      <div class="filter-grid">
+        <input id="searchInput" type="text" placeholder="이름, 영어 이름, 이메일, 전화, 전공 검색" />
+        <select id="chapterSelect"></select>
+        <select id="majorSelect"></select>
+        <select id="sortSelect">
+          <option value="name_kr">이름순</option>
+          <option value="grad_year">학번순</option>
+          <option value="immigration_year">도미년도순</option>
+        </select>
+      </div>
+      <div id="chapterPills" class="pill-row"></div>
+    </section>
+
+    <section id="list">
+      <div class="section-head">
+        <h2 class="section-title">동문 목록</h2>
+        <div class="section-count" id="countText"></div>
+      </div>
+      <div id="empty" class="empty">조건에 맞는 동문 정보가 없습니다.</div>
+      <div id="cards" class="cards"></div>
+    </section>
+
+    <div class="footer">정적 웹페이지 · 휴대전화 화면에 맞춰 조정된 동문회형 주소록</div>
+  </main>
+
+  <script>
+    const records = [{"id": 1, "chapter": "Washington", "name_kr": "김 용국", "name_en": "", "address": "", "phone": "703-916-0420", "email": "alexyongkim@hotmail.com", "college": "", "major": "정치외교", "grad_year": "1984", "immigration_year": ""}, {"id": 2, "chapter": "Washington", "name_kr": "김 은주", "name_en": "", "address": "", "phone": "703-946-9061", "email": "eunice1962@hanmail.net", "college": "", "major": "연극영화", "grad_year": "1981", "immigration_year": ""}, {"id": 3, "chapter": "Washington", "name_kr": "김 태미", "name_en": "", "address": "10412 Pearl St.Fairfax, VA 22032", "phone": "571-340-8905", "email": "taemeekim@gmail.com", "college": "", "major": "약학", "grad_year": "1986", "immigration_year": "2002"}, {"id": 4, "chapter": "Washington", "name_kr": "김 재연", "name_en": "Jae Youn Kim", "address": "7545 Red Hill Dr., Springfield VA 22153", "phone": "703-863-9220", "email": "jykim@law.gwu.edu", "college": "공대", "major": "기계공학", "grad_year": "1990", "immigration_year": "2007"}, {"id": 5, "chapter": "Washington", "name_kr": "나 종윤", "name_en": "", "address": "", "phone": "703-727-0752", "email": "chong.na@gmail.com", "college": "", "major": "전자공학", "grad_year": "1988", "immigration_year": ""}, {"id": 6, "chapter": "Washington", "name_kr": "박 영관", "name_en": "Young Kwan Park", "address": "1342 Rock Chapel Road, Herndon,VA 20170", "phone": "703-470-6615", "email": "pkyoung123@yahoo.com", "college": "농대", "major": "식품가공학", "grad_year": "1981", "immigration_year": ""}, {"id": 7, "chapter": "Washington", "name_kr": "박 우수", "name_en": "", "address": "", "phone": "703-946-9061", "email": "hug4cho@gmail.com", "college": "", "major": "체육교육", "grad_year": "1983", "immigration_year": ""}, {"id": 8, "chapter": "Washington", "name_kr": "박 주성", "name_en": "", "address": "13432 Pearson Valley Ln Centreville, VA 20120", "phone": "703-615-5361", "email": "cfc1966@gmail.com", "college": "", "major": "의학", "grad_year": "1985", "immigration_year": ""}, {"id": 9, "chapter": "Washington", "name_kr": "박 선희", "name_en": "", "address": "3042 Winter Pine Ct. Fairfax, VA 22031", "phone": "703-409-3065", "email": "dansonergy@gmail.com", "college": "", "major": "무용", "grad_year": "1980", "immigration_year": ""}, {"id": 10, "chapter": "Washington", "name_kr": "신 태현", "name_en": "", "address": "", "phone": "571-212-2922", "email": "taehyunshin@gmail.com", "college": "예술대학", "major": "사진학과", "grad_year": "1985", "immigration_year": ""}, {"id": 11, "chapter": "Washington", "name_kr": "윤 세미 ", "name_en": "", "address": "", "phone": "202-379-6704", "email": "", "college": "", "major": "영어영문", "grad_year": "2006", "immigration_year": ""}, {"id": 12, "chapter": "Washington", "name_kr": "이 관준", "name_en": "", "address": "", "phone": "703-531-9233", "email": "econoacct@gmail.com", "college": "", "major": "경영학", "grad_year": "1994", "immigration_year": ""}, {"id": 13, "chapter": "Washington", "name_kr": "이 규용", "name_en": "", "address": "", "phone": "213-718-0536", "email": "kyuyong812@yahoo.com", "college": "", "major": "생물학", "grad_year": "1987", "immigration_year": ""}, {"id": 14, "chapter": "Washington", "name_kr": "이 병한", "name_en": "", "address": "6333 Shirey Lane, Centreville, VA 20121", "phone": "571-245-6097", "email": "bhjoshualee@msn.com", "college": "", "major": "독어독문학", "grad_year": "1982", "immigration_year": ""}, {"id": 15, "chapter": "Washington", "name_kr": "이 신욱", "name_en": "", "address": "", "phone": "571-499-1032", "email": "shinwookyi@gmail.com", "college": "", "major": "경제학", "grad_year": "1992", "immigration_year": ""}, {"id": 16, "chapter": "Washington", "name_kr": "이 영신", "name_en": "", "address": "8362 Pedigrue Ct., Gainesville VA 20120", "phone": "703-628-2175", "email": "salangni7@gmail.com", "college": "", "major": "약학", "grad_year": "1985", "immigration_year": ""}, {"id": 17, "chapter": "Washington", "name_kr": "이 은희", "name_en": "", "address": "", "phone": "571-7308419", "email": "eun0717@yahoo.com", "college": "", "major": "간호학", "grad_year": "1982", "immigration_year": ""}, {"id": 18, "chapter": "Washington", "name_kr": "이 상섭", "name_en": "Sang Seob Lee ", "address": "10808 Mantilla Ct., Oakton, VA 22124", "phone": "703-772-0781", "email": "kkykky3395@gmail.com", "college": "", "major": "시각디자인 공예학과", "grad_year": "1986", "immigration_year": "2000"}, {"id": 19, "chapter": "Washington", "name_kr": "이 형렬", "name_en": "Hyeongyeol Edward Lee", "address": "12312 Pawleys Mill Cir., Raleigh NC 27614", "phone": "919-491-5849", "email": "zidane.unc@gmail.com", "college": "", "major": "경영학", "grad_year": "2001", "immigration_year": ""}, {"id": 20, "chapter": "Washington", "name_kr": "이 효열", "name_en": "", "address": "", "phone": "757-650-0248", "email": "", "college": "", "major": "건축공학", "grad_year": "1981", "immigration_year": ""}, {"id": 21, "chapter": "Washington", "name_kr": "임 동일", "name_en": "", "address": "5422 Gladewright Dr., Centreville, VA  20120", "phone": "703-200-7403  ", "email": "danielim6670@yahoo.com", "college": "", "major": "연극영화", "grad_year": "1984", "immigration_year": ""}, {"id": 22, "chapter": "Washington", "name_kr": "장 혜선", "name_en": "", "address": "", "phone": "703-895-1655", "email": "heasun.jang@gmail.com", "college": "", "major": "무용", "grad_year": "1980", "immigration_year": ""}, {"id": 23, "chapter": "Washington", "name_kr": "전    미", "name_en": "", "address": "", "phone": "703-946-6463", "email": "emmikimjun63@hotmail.com", "college": "", "major": "음악(첼로)", "grad_year": "1983", "immigration_year": ""}, {"id": 24, "chapter": "Washington", "name_kr": "전 양수", "name_en": "", "address": "", "phone": "703-200-2579", "email": "j.goodcpa@gmail.com", "college": "", "major": "일어일문학", "grad_year": "1982", "immigration_year": ""}, {"id": 25, "chapter": "Washington", "name_kr": "전 재균", "name_en": "Jaekyun Jun", "address": "3209 Spring Dr., Alexandria, VA 22306", "phone": "703-944-7937", "email": "tkmasters@yahoo.com", "college": "", "major": "심리학", "grad_year": "1991", "immigration_year": "1997"}, {"id": 26, "chapter": "Washington", "name_kr": "정 세진", "name_en": "", "address": "210 East Fairfax St. #319, Falls Church ,VA 22046", "phone": "703-477-1452", "email": "kopriusa@yahoo.com", "college": "", "major": "정치외교", "grad_year": "1983", "immigration_year": ""}, {"id": 27, "chapter": "Washington", "name_kr": "정 수복", "name_en": "Su Bok Jeong", "address": "6466 Manhasset Lane, Alexandria, VA 22312", "phone": "703-473-6411", "email": "sbjeong65@yahoo.com", "college": "", "major": "정경대학 경제학", "grad_year": "1986", "immigration_year": "2005"}, {"id": 28, "chapter": "Washington", "name_kr": "정 희정", "name_en": "", "address": "", "phone": "703-835-0654", "email": "heejung0120@gmail.com", "college": "", "major": "관현악", "grad_year": "1999", "immigration_year": ""}, {"id": 29, "chapter": "Washington", "name_kr": "주 정민", "name_en": "", "address": "", "phone": "703-401-2030", "email": "poppins70@hotmail.com", "college": "", "major": "문헌정보", "grad_year": "1989", "immigration_year": ""}, {"id": 30, "chapter": "Washington", "name_kr": "진 경희", "name_en": "", "address": "", "phone": "703-473-5562", "email": "", "college": "", "major": "영어학", "grad_year": "1986", "immigration_year": ""}, {"id": 31, "chapter": "Washington", "name_kr": "최 성준", "name_en": "", "address": "", "phone": "240-515-1069", "email": "tank12joon@hanmail.net", "college": "", "major": "연극영화", "grad_year": "1984", "immigration_year": ""}];
+
+    function text(v) {
+      return (v && String(v).trim()) ? String(v).trim() : "-";
+    }
+
+    function telHref(v) {
+      return "tel:" + String(v || "").replace(/[^\d+]/g, "");
+    }
+
+    function mailHref(v) {
+      return "mailto:" + String(v || "").trim();
+    }
+
+    function init() {
+      const chapters = [...new Set(records.map(r => r.chapter).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'en'));
+      const majors = [...new Set(records.map(r => r.major).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ko'));
+
+      document.getElementById("chapterSelect").innerHTML =
+        '<option value="">전체 지회</option>' +
+        chapters.map(c => `<option value="${c}">${c}</option>`).join("");
+
+      document.getElementById("majorSelect").innerHTML =
+        '<option value="">전체 전공</option>' +
+        majors.map(m => `<option value="${m}">${m}</option>`).join("");
+
+      const pills = document.getElementById("chapterPills");
+      pills.innerHTML =
+        `<button class="pill active" data-value="">전체</button>` +
+        chapters.map(c => `<button class="pill" data-value="${c}">${c}</button>`).join("");
+
+      pills.querySelectorAll(".pill").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.getElementById("chapterSelect").value = btn.dataset.value;
+          pills.querySelectorAll(".pill").forEach(x => x.classList.remove("active"));
+          btn.classList.add("active");
+          render();
+        });
+      });
+
+      ["searchInput","chapterSelect","majorSelect","sortSelect"].forEach(id => {
+        document.getElementById(id).addEventListener("input", render);
+        document.getElementById(id).addEventListener("change", render);
+      });
+
+      document.getElementById("totalCount").textContent = records.length.toLocaleString();
+      document.getElementById("chapterCount").textContent = chapters.length.toLocaleString();
+
+      render();
+    }
+
+    function render() {
+      const q = document.getElementById("searchInput").value.trim().toLowerCase();
+      const chapter = document.getElementById("chapterSelect").value;
+      const major = document.getElementById("majorSelect").value;
+      const sort = document.getElementById("sortSelect").value;
+
+      let filtered = records.filter(r => {
+        const bag = [
+          r.name_kr, r.name_en, r.address, r.phone, r.email,
+          r.college, r.major, r.grad_year, r.immigration_year, r.chapter
+        ].join(" ").toLowerCase();
+
+        if (q && !bag.includes(q)) return false;
+        if (chapter && r.chapter !== chapter) return false;
+        if (major && r.major !== major) return false;
+        return true;
+      });
+
+      filtered.sort((a,b) => String(a[sort] || "").localeCompare(String(b[sort] || ""), "ko"));
+
+      const cards = document.getElementById("cards");
+      const empty = document.getElementById("empty");
+
+      if (!filtered.length) {
+        cards.innerHTML = "";
+        empty.style.display = "block";
+      } else {
+        empty.style.display = "none";
+        cards.innerHTML = filtered.map(r => `
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <h3 class="name-kr">${text(r.name_kr)}</h3>
+                <div class="name-en">${text(r.name_en)}</div>
+              </div>
+              <div class="chapter-tag">${text(r.chapter)}</div>
+            </div>
+
+            <div class="quick-actions">
+              ${r.phone ? `<a class="small-btn" href="${telHref(r.phone)}">전화</a>` : ``}
+              ${r.email ? `<a class="small-btn" href="${mailHref(r.email)}">이메일</a>` : ``}
+            </div>
+
+            <div class="meta">
+              <div class="row"><div class="label">주소</div><div class="value">${text(r.address)}</div></div>
+              <div class="row"><div class="label">전화</div><div class="value">${r.phone ? `<a href="${telHref(r.phone)}">${r.phone}</a>` : '-'}</div></div>
+              <div class="row"><div class="label">이메일</div><div class="value">${r.email ? `<a href="${mailHref(r.email)}">${r.email}</a>` : '-'}</div></div>
+              <div class="row"><div class="label">단과대</div><div class="value">${text(r.college)}</div></div>
+              <div class="row"><div class="label">전공</div><div class="value">${text(r.major)}</div></div>
+              <div class="row"><div class="label">학번</div><div class="value">${text(r.grad_year)}</div></div>
+              <div class="row"><div class="label">도미년도</div><div class="value">${text(r.immigration_year)}</div></div>
+            </div>
+          </article>
+        `).join("");
+      }
+
+      document.getElementById("resultCount").textContent = filtered.length.toLocaleString();
+      document.getElementById("countText").textContent = `총 ${filtered.length}명 표시 중`;
+    }
+
+    init();
+  </script>
 </body>
 </html>
