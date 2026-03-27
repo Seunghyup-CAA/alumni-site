@@ -104,7 +104,7 @@
     .pill.active{background:var(--softblue);color:var(--navy);border-color:#cfd8ef;font-weight:700}
     .chapter-grid,.ad-grid,.history-grid,.pres-grid{display:grid;gap:14px}
     .chapter-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-    .ad-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .ad-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
     .history-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
     .pres-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
     .mini-card,.ad-card,.history-card,.pres-card{
@@ -123,7 +123,7 @@
     .quick-actions{display:flex;gap:8px;margin:8px 0 12px;flex-wrap:wrap}
     .small-btn{
       display:inline-block;text-decoration:none;border:1px solid var(--line);color:var(--text);background:var(--soft);
-      border-radius:999px;padding:6px 10px;font-size:.76rem;
+      border-radius:999px;padding:7px 11px;font-size:.78rem;font-weight:700;
     }
     .meta{display:grid;gap:7px}
     .row{display:grid;grid-template-columns:70px 1fr;gap:10px;font-size:.9rem;align-items:start}
@@ -186,7 +186,9 @@
       <p class="gate-text">동문회 내부 열람용 페이지입니다. 공통 비밀번호를 입력해 주세요.</p>
       <input id="passwordInput" class="gate-input" type="password" placeholder="비밀번호 입력" />
       <button class="gate-btn" onclick="unlock()">입장하기</button>
-      <div class="gate-note">공통 비밀번호: cau2026</div>
+      
+      <div class="gate-note">공통 비밀번호: cau2026 · 신규등록/수정요청은 기본 메일앱으로 연결됩니다.</div>
+
       <div id="error" class="gate-error"></div>
     </div>
   </section>
@@ -202,7 +204,7 @@
           <a class="nav-btn" href="#directory">주소록</a>
           <a class="nav-btn" href="#ads">지역광고</a>
           <a class="nav-btn" href="#history">중앙대 약사</a>
-          <a class="nav-btn" href="mailto:seunghyuplee@hotmail.com?subject=신규 동문 등록 요청&body=이름:%0A지회:%0A주소:%0A전화:%0A이메일:%0A전공:%0A학번:%0A도미년도:">신규등록</a>
+          <a class="nav-btn primary" href="mailto:seunghyuplee@hotmail.com?subject=%EC%8B%A0%EA%B7%9C%20%EB%8F%99%EB%AC%B8%20%EB%93%B1%EB%A1%9D%20%EC%9A%94%EC%B2%AD&body=%EC%9D%B4%EB%A6%84%3A%0A%EC%A7%80%ED%9A%8C%3A%0A%EC%A3%BC%EC%86%8C%3A%0A%EC%A0%84%ED%99%94%3A%0A%EC%9D%B4%EB%A9%94%EC%9D%BC%3A%0A%EC%A0%84%EA%B3%B5%3A%0A%ED%95%99%EB%B2%88%3A%0A%EB%8F%84%EB%AF%B8%EB%85%84%EB%8F%84%3A">신규등록</a>
           <button class="nav-btn" onclick="logout()">잠금</button>
           <button class="nav-btn primary" onclick="window.scrollTo({top:0,behavior:'smooth'})">맨 위로</button>
         </div>
@@ -252,7 +254,7 @@
         <div class="section-head">
           <div>
             <h2 class="section-title">주소록</h2>
-            <div class="section-sub">이름, 지역, 전공, 전화, 이메일 기준으로 찾을 수 있습니다.</div>
+            <div class="section-sub">이름, 지역, 전공, 전화, 이메일 기준으로 찾을 수 있습니다. </div>
           </div>
           <div class="section-sub" id="countText"></div>
         </div>
@@ -267,7 +269,7 @@
             <option value="immigration_year">도미년도순</option>
           </select>
         </div>
-        <div id="chapterPills" class="pill-row"></div>
+        
       </section>
 
       <section class="section">
@@ -504,7 +506,7 @@ function renderChapterSummary(){
             <div class="quick-actions">
               ${r.phone ? `<a class="small-btn" href="${telHref(r.phone)}">전화</a>` : ``}
               ${r.email ? `<a class="small-btn" href="${mailHref(r.email)}">이메일</a>` : ``}
-              <a class="small-btn" href="mailto:seunghyuplee@hotmail.com?subject=주소록 수정 요청 - ${r.name_kr}&body=이름:${r.name_kr}%0A지회:${r.chapter}%0A수정 내용:%0A전화:%0A이메일:">수정요청</a>
+              <a class="small-btn" href="mailto:seunghyuplee@hotmail.com?subject=%EC%A3%BC%EC%86%8C%EB%A1%9D%20%EC%88%98%EC%A0%95%20%EC%9A%94%EC%B2%AD%20-%20${encodeURIComponent(r.name_kr)}&body=%EC%9D%B4%EB%A6%84%3A%20${encodeURIComponent(r.name_kr)}%0A%EC%A7%80%ED%9A%8C%3A%20${encodeURIComponent(r.chapter)}%0A%EC%88%98%EC%A0%95%20%EB%82%B4%EC%9A%A9%3A%0A%EC%A0%84%ED%99%94%3A%0A%EC%9D%B4%EB%A9%94%EC%9D%BC%3A">수정요청</a>
             </div>
             <div class="meta">
               <div class="row"><div class="label">주소</div><div class="value">${text(r.address)}</div></div>
@@ -519,7 +521,7 @@ function renderChapterSummary(){
         `).join("");
       }
 
-      document.getElementById("countText").textContent = `총 ${filtered.length}명 표시 중`;
+      
     }
 
     if(localStorage.getItem(STORAGE_KEY) === "1"){
