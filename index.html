@@ -129,9 +129,9 @@
     .row{display:grid;grid-template-columns:70px 1fr;gap:10px;font-size:.9rem;align-items:start}
     .label{color:var(--muted)}
     .value a{color:var(--navy2);text-decoration:none;word-break:break-all}
-    .timeline{display:grid;gap:10px}
-    .pres-timeline{display:grid;gap:6px}
-    .timeline-item{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:start;padding:9px 0;border-top:1px dashed #e7dece}
+    .timeline{display:grid;gap:5px}
+    .pres-timeline{display:grid;gap:3px}
+    .timeline-item{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:start;padding:4px 0;border-top:1px dashed #e7dece}
     .timeline-item:first-child{border-top:none;padding-top:0}
     .timeline-date{font-weight:700;color:var(--navy);font-size:.84rem}
     .timeline-text{font-size:.88rem;color:var(--text)}
@@ -409,7 +409,7 @@ function renderChapterSummary(){
     function renderPresidents(){
       const wrap = document.getElementById("presGrid");
       wrap.innerHTML = presidents.map(item => `
-        <div class="timeline-item" style="padding:5px 0;">
+        <div class="timeline-item" style="padding:3px 0;">
           <div class="timeline-date">${text(item.term)}<br><span style="font-weight:400;color:var(--muted);font-size:.78rem">${text(item.period)}</span></div>
           <div class="timeline-text">${text(item.name)}</div>
         </div>
