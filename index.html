@@ -202,7 +202,6 @@
           <a class="nav-btn" href="#directory">주소록</a>
           <a class="nav-btn" href="#ads">지역광고</a>
           <a class="nav-btn" href="#history">중앙대 약사</a>
-          <a class="nav-btn" href="mailto:seunghyuplee@hotmail.com?subject=신규 동문 등록 요청&body=이름:%0A지회:%0A주소:%0A전화:%0A이메일:%0A전공:%0A학번:%0A도미년도:">신규등록</a>
           <button class="nav-btn" onclick="logout()">잠금</button>
           <button class="nav-btn primary" onclick="window.scrollTo({top:0,behavior:'smooth'})">맨 위로</button>
         </div>
@@ -289,7 +288,7 @@
         <div class="section-head">
           <div>
             <h2 class="section-title">중앙대 약사</h2>
-            <div class="section-sub">100주년 약사와 중앙대학교 북미주동문회연합회 약사 주요 항목을 정리했습니다.</div>
+            <div class="section-sub">100주년 약사와 워싱턴 동문회 약사 주요 항목을 정리했습니다.</div>
           </div>
         </div>
         <div class="history-grid">
@@ -299,7 +298,7 @@
             <div id="hist100" class="timeline"></div>
           </div>
           <div class="history-card">
-            <div class="history-title">중앙대학교 북미주동문회연합회 약사</div>
+            <div class="history-title">워싱턴 동문회 약사</div>
             <div class="history-sub">동문회 운영 및 행사 기록</div>
             <div id="hist45" class="timeline"></div>
           </div>
@@ -353,21 +352,11 @@
       document.getElementById("error").textContent = "";
     }
 
-    
-function goChapter(ch){
-  document.getElementById("chapterSelect").value = ch;
-  document.querySelectorAll(".pill").forEach(p=>{
-    if(p.dataset.value===ch){p.classList.add("active")}else{p.classList.remove("active")}
-  });
-  renderDirectory();
-  window.location.href="#directory";
-}
-
-function renderChapterSummary(){
+    function renderChapterSummary(){
       const wrap = document.getElementById("chapterSummary");
       wrap.innerHTML = chapterCounts.map(item => `
-        <div class="mini-card" onclick="goChapter(\'${item.chapter}\')" style="cursor:pointer;">
-        <div class="mini-top">
+        <div class="mini-card">
+          <div class="mini-top">
             <div>
               <div class="mini-title">${text(item.chapter)}</div>
               <div class="mini-sub">등록 인원</div>
@@ -381,10 +370,9 @@ function renderChapterSummary(){
     function renderAds(){
       const wrap = document.getElementById("adGrid");
       wrap.innerHTML = chapterCounts.map(item => `
-        <div class="mini-card" onclick="goChapter(\'${item.chapter}\')" style="cursor:pointer;">
         <div class="ad-card">
           <div class="ad-title">${text(item.chapter)} 지역광고</div>
-          <div class="ad-sub">해당 지회 광고 및 협찬 영역입니다. 이 영역에 ${text(item.chapter)} 지회의 협찬, 비즈니스 광고, 행사 공지를 넣을 수 있습니다.</div>
+          <div class="ad-sub">이 영역에 ${text(item.chapter)} 지회의 협찬, 비즈니스 광고, 행사 공지를 넣을 수 있습니다.</div>
         </div>
       `).join("");
     }
@@ -504,7 +492,6 @@ function renderChapterSummary(){
             <div class="quick-actions">
               ${r.phone ? `<a class="small-btn" href="${telHref(r.phone)}">전화</a>` : ``}
               ${r.email ? `<a class="small-btn" href="${mailHref(r.email)}">이메일</a>` : ``}
-              <a class="small-btn" href="mailto:seunghyuplee@hotmail.com?subject=주소록 수정 요청 - ${r.name_kr}&body=이름:${r.name_kr}%0A지회:${r.chapter}%0A수정 내용:%0A전화:%0A이메일:">수정요청</a>
             </div>
             <div class="meta">
               <div class="row"><div class="label">주소</div><div class="value">${text(r.address)}</div></div>
