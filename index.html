@@ -315,7 +315,9 @@
             <div class="section-sub">연합회와 동문회 전통을 보여주는 핵심 정보</div>
           </div>
         </div>
-        <div id="presGrid" class="pres-grid"></div>
+        <div class="history-card">
+          <div id="presGrid" class="timeline"></div>
+        </div>
       </section>
 
       <div class="footer">공통 비밀번호 적용 · 모바일/웹 브라우저 동시 최적화 · 첨부 엑셀 자료 기반 시안</div>
@@ -406,14 +408,9 @@ function renderChapterSummary(){
     function renderPresidents(){
       const wrap = document.getElementById("presGrid");
       wrap.innerHTML = presidents.map(item => `
-        <div class="pres-card">
-          <div class="pres-top">
-            <div>
-              <div class="pres-name">${text(item.name)}</div>
-              <div class="pres-sub">${text(item.term)}</div>
-            </div>
-            <div class="mini-badge">${text(item.period)}</div>
-          </div>
+        <div class="timeline-item">
+          <div class="timeline-date">${text(item.term)}<br><span style="font-weight:400;color:var(--muted);font-size:.78rem">${text(item.period)}</span></div>
+          <div class="timeline-text">${text(item.name)}</div>
         </div>
       `).join("");
     }
