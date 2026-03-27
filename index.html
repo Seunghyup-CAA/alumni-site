@@ -267,7 +267,7 @@
             <option value="immigration_year">도미년도순</option>
           </select>
         </div>
-        <div id="chapterPills" class="pill-row"></div>
+
       </section>
 
       <section class="section">
@@ -356,9 +356,6 @@
     
 function goChapter(ch){
   document.getElementById("chapterSelect").value = ch;
-  document.querySelectorAll(".pill").forEach(p=>{
-    if(p.dataset.value===ch){p.classList.add("active")}else{p.classList.remove("active")}
-  });
   renderDirectory();
   window.location.href="#directory";
 }
@@ -382,7 +379,6 @@ function renderChapterSummary(){
       const wrap = document.getElementById("adGrid");
       wrap.innerHTML = chapterCounts.map(item => `
         <div class="mini-card" onclick="goChapter(\'${item.chapter}\')" style="cursor:pointer;">
-        <div class="mini-card">
           <div class="mini-top">
             <div>
               <div class="mini-title">${text(item.chapter)} 지역광고</div>
@@ -439,20 +435,7 @@ function renderChapterSummary(){
         '<option value="">전체 전공</option>' +
         majors.map(m => `<option value="${m}">${m}</option>`).join("");
 
-      const pills = document.getElementById("chapterPills");
-      pills.innerHTML = `<button class="pill active" data-value="">전체</button>` +
-        chapters.map(c => `<button class="pill" data-value="${c}">${c}</button>`).join("");
-
-      pills.querySelectorAll(".pill").forEach(btn => {
-        btn.addEventListener("click", () => {
-          document.getElementById("chapterSelect").value = btn.dataset.value;
-          pills.querySelectorAll(".pill").forEach(x => x.classList.remove("active"));
-          btn.classList.add("active");
-          renderDirectory();
-        });
-      });
-
-      ["searchInput","chapterSelect","majorSelect","sortSelect"].forEach(id => {
+["searchInput","chapterSelect","majorSelect","sortSelect"].forEach(id => {
         document.getElementById(id).addEventListener("input", renderDirectory);
         document.getElementById(id).addEventListener("change", renderDirectory);
       });
@@ -476,6 +459,11 @@ function renderChapterSummary(){
       const sort = document.getElementById("sortSelect").value;
 
       let filtered = records.filter(r => {
+        // 작고 동문 및 빈 레코드 제외
+        if(!r.name_kr || r.name_kr.trim() === "nan" || r.name_kr.trim() === "") return false;
+        if(r.chapter === "작고 동문") return false;
+        if(r.address && r.address.includes("작고")) return false;
+
         const bag = [
           r.name_kr, r.name_en, r.address, r.phone, r.email,
           r.college, r.major, r.grad_year, r.immigration_year, r.chapter
