@@ -349,6 +349,23 @@
     .timeline-date { font-weight: 700; color: var(--navy3); font-size: .8rem; }
     .timeline-text { font-size: .84rem; color: var(--text); }
 
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,.92);
+      align-items: center; justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 90vw; max-height: 90vh;
+      border-radius: 12px; box-shadow: 0 0 60px rgba(0,0,0,.5);
+    }
+    .lightbox-close {
+      position: absolute; top: 20px; right: 24px;
+      color: #fff; font-size: 2rem; cursor: pointer;
+      background: none; border: none; line-height: 1;
+    }
+
     /* ── FOOTER ── */
     .footer {
       background: var(--navy);
@@ -559,9 +576,23 @@
     </div>
   </footer>
 
+  <!-- 라이트박스 -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightboxImg" src="" alt="">
+  </div>
+
 </div><!-- /app -->
 
 <script>
+  function openLightbox(src){
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('open');
+  }
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLightbox(); });
   const PASSWORD    = "cau2026";
   const STORAGE_KEY = "cau_union_unlock";
 
@@ -675,13 +706,13 @@
   }
 
   function renderAds(){
-    const atlantaImg = 'https://raw.githubusercontent.com/Seunghyup-CAA/alumni-site/bbd876e6f528922c407527782b686901be2383dc/gahrham.png';
-    const bostonImg  = 'https://raw.githubusercontent.com/Seunghyup-CAA/alumni-site/bbd876e6f528922c407527782b686901be2383dc/kangdental.png';
+    const atlantaImg = 'https://raw.githubusercontent.com/Seunghyup-CAA/alumni-site/main/gahrham.png';
+    const bostonImg  = 'https://raw.githubusercontent.com/Seunghyup-CAA/alumni-site/main/kangdental.png';
     document.getElementById("adGrid").innerHTML = chapterCounts.map(item=> {
       if(item.chapter === 'Atlanta') {
         return `
-          <div class="ad-card" onclick="filterChapter('Atlanta')" style="padding:0;overflow:hidden;">
-            <img src="${atlantaImg}" alt="가람레스토랑" style="width:100%;height:180px;object-fit:cover;border-radius:14px 14px 0 0;">
+          <div class="ad-card" style="padding:0;overflow:hidden;">
+            <img src="${atlantaImg}" alt="가람레스토랑" onclick="openLightbox(this.src)" style="width:100%;height:180px;object-fit:cover;border-radius:14px 14px 0 0;cursor:zoom-in;">
             <div style="padding:12px;">
               <div class="ad-card-title">GAH-RHAM Restaurant 가람레스토랑</div>
               <div class="ad-card-sub">5027 Garrett Ave. Beltsville, MD 20705<br>☎ 301-595-4122</div>
@@ -690,8 +721,8 @@
       }
       if(item.chapter === 'Boston(New England)') {
         return `
-          <div class="ad-card" onclick="filterChapter('Boston(New England)')" style="padding:0;overflow:hidden;">
-            <img src="${bostonImg}" alt="강을모 치과" style="width:100%;height:180px;object-fit:cover;border-radius:14px 14px 0 0;">
+          <div class="ad-card" style="padding:0;overflow:hidden;">
+            <img src="${bostonImg}" alt="강을모 치과" onclick="openLightbox(this.src)" style="width:100%;height:180px;object-fit:cover;border-radius:14px 14px 0 0;cursor:zoom-in;">
             <div style="padding:12px;">
               <div class="ad-card-title">강을모 치과 Kang Dental</div>
               <div class="ad-card-sub">Boston(New England) 지부 광고</div>
