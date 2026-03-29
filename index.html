@@ -156,7 +156,7 @@
     /* ── HERO ── */
     .hero {
       background: var(--navy);
-      padding: 64px 0 56px; position: relative; overflow: hidden;
+      padding: 24px 0 56px; position: relative; overflow: hidden;
     }
     .hero-bg {
       position: absolute; inset: 0;
@@ -183,7 +183,7 @@
       background: rgba(139,26,26,.2); border: 1px solid rgba(139,26,26,.4);
       border-radius: 999px; padding: 5px 14px;
       font-size: .74rem; color: #ffb0b0; letter-spacing: .08em;
-      text-transform: uppercase; margin-bottom: 20px;
+      text-transform: uppercase; margin-bottom: 6px;
     }
     .hero-badge::before {
       content: ''; width: 6px; height: 6px; border-radius: 50%;
@@ -206,12 +206,12 @@
     .stat {
       background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.1);
-      border-radius: 16px; padding: 16px 14px; text-align: center;
+      border-radius: 16px; padding: 10px 14px; text-align: center;
       transition: background .2s;
     }
     .stat:hover { background: rgba(255,255,255,.1); }
-    .stat-num { font-size: 1.9rem; font-weight: 800; color: var(--gold2); letter-spacing: -.03em; line-height: 1; }
-    .stat-label { font-size: .71rem; color: rgba(255,255,255,.45); margin-top: 5px; }
+    .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--gold2); letter-spacing: -.03em; line-height: 1; }
+    .stat-label { font-size: .71rem; color: rgba(255,255,255,.45); margin-top: 4px; }
 
     /* ── SECTIONS ── */
     .section { padding: 44px 0 12px; scroll-margin-top: 72px; }
@@ -426,9 +426,24 @@
         <a class="nav-btn red" href="javascript:void(0)" onclick="openLink('mailto:cauunion.alumni@gmail.com?subject=신규 등록 요청&body=이름:%0A지회:%0A주소:%0A전화:%0A이메일:%0A전공:%0A학번:%0A도미년도:')">신규등록</a>
         <button class="nav-btn" style="background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold2);" onclick="sendBulkEmail()">📢 전체공지</button>
         <button class="nav-btn" onclick="logout()">잠금</button>
+        <button class="nav-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">맨위로 ↑</button>
       </div>
     </div>
   </header>
+
+  <!-- 플로팅 맨위로 버튼 -->
+  <button id="floatTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="
+    display:none; position:fixed; bottom:28px; right:24px; z-index:999;
+    width:46px; height:46px; border-radius:50%;
+    background:var(--navy); border:2px solid var(--gold);
+    color:var(--gold2); font-size:1.1rem; cursor:pointer;
+    box-shadow:0 4px 16px rgba(0,0,0,.3); transition:opacity .2s;
+  ">↑</button>
+  <script>
+    window.addEventListener('scroll', ()=>{
+      document.getElementById('floatTop').style.display = window.scrollY > 300 ? 'block' : 'none';
+    });
+  </script>
 
   <!-- HERO -->
   <section class="hero">
@@ -485,8 +500,8 @@
           <select id="chapterSelect"></select>
           <select id="majorSelect"></select>
           <div class="sort-btns">
-            <button class="sort-btn active" data-sort="name_kr">이름순</button>
-            <button class="sort-btn" data-sort="chapter">지부순</button>
+            <button class="sort-btn active" data-sort="chapter">지부순</button>
+            <button class="sort-btn" data-sort="name_kr">이름순</button>
             <button class="sort-btn" data-sort="grad_year">학번순</button>
           </div>
         </div>
