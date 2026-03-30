@@ -533,6 +533,12 @@
             <button class="sort-btn" data-sort="major">전공순</button>
             <button class="sort-btn" data-sort="grad_year">학번순</button>
           </div>
+          <button onclick="renderDirectory()" style="
+            background:var(--navy); color:#fff; border:none;
+            border-radius:12px; padding:11px 18px; font-size:.88rem;
+            font-family:inherit; cursor:pointer; white-space:nowrap;
+            transition:background .2s;
+          " onmouseover="this.style.background='var(--navy2)'" onmouseout="this.style.background='var(--navy)'">🔍 검색</button>
         </div>
       </div>
       <div class="count-text" id="countText"></div>
@@ -722,6 +728,9 @@
     ["searchInput","majorSelect"].forEach(id=>{
       document.getElementById(id).addEventListener("input", renderDirectory);
       document.getElementById(id).addEventListener("change", renderDirectory);
+    });
+    document.getElementById("searchInput").addEventListener("keydown", e=>{
+      if(e.key==="Enter"){ renderDirectory(); e.target.blur(); }
     });
 
     // 정렬 버튼
