@@ -391,7 +391,7 @@
     <p class="gate-sub">동문 전용 페이지입니다. 비밀번호를 입력해 주세요.</p>
     <input id="passwordInput" class="gate-input" type="password" placeholder="비밀번호 입력" />
     <button class="gate-btn" onclick="unlock()">입장하기</button>
-    <div class="gate-note">문의: caudc.alumni@gmail.com</div>
+    <div class="gate-note">문의: seunghyuplee@hotmail.com</div>
     <div id="error" class="gate-error"></div>
   </div>
 </section>
@@ -418,7 +418,7 @@
         <a class="nav-btn" href="#" onclick="navGo('notice');closeMenu();return false;">공지</a>
         <a class="nav-btn" href="#" onclick="navGo('ads');closeMenu();return false;">동문광고</a>
         <a class="nav-btn" href="#" onclick="navGo('history');closeMenu();return false;">약사</a>
-        <a class="nav-btn gold" href="javascript:void(0)" onclick="openLink('mailto:caudc.alumni@gmail.com?subject=신규 등록 요청&body=이름:%0A주소:%0A전화:%0A이메일:%0A전공:%0A학번:%0A도미년도:')">신규등록</a>
+        <a class="nav-btn gold" href="javascript:void(0)" onclick="openLink('mailto:seunghyuplee@hotmail.com?subject=신규 등록 요청&body=이름:%0A주소:%0A전화:%0A이메일:%0A전공:%0A학번:%0A도미년도:')">신규등록</a>
         <button class="nav-btn" style="background:rgba(200,168,75,.15);border-color:var(--gold);color:var(--gold2);" onclick="sendBulkEmail()">📢 전체공지</button>
         <button class="nav-btn" onclick="logout()">잠금</button>
         <button class="nav-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">맨위로 ↑</button>
@@ -581,17 +581,17 @@
         <div class="ad-card ad-placeholder">
           <div class="ad-card-title">광고 모집 중 ①</div>
           <div class="ad-card-sub">이 공간에 워싱턴 동문 여러분의 비즈니스를 홍보하세요. 음식점, 법률, 의료, 부동산 등 업종 무관.</div>
-          <a class="ad-card-cta" href="mailto:caudc.alumni@gmail.com?subject=동문광고 문의">광고 문의</a>
+          <a class="ad-card-cta" href="mailto:seunghyuplee@hotmail.com?subject=동문광고 문의">광고 문의</a>
         </div>
         <div class="ad-card ad-placeholder">
           <div class="ad-card-title">광고 모집 중 ②</div>
           <div class="ad-card-sub">동문 네트워크를 활용한 효과적인 비즈니스 홍보 기회입니다. 관심 있으신 동문은 연락 주세요.</div>
-          <a class="ad-card-cta" href="mailto:caudc.alumni@gmail.com?subject=동문광고 문의">광고 문의</a>
+          <a class="ad-card-cta" href="mailto:seunghyuplee@hotmail.com?subject=동문광고 문의">광고 문의</a>
         </div>
         <div class="ad-card ad-placeholder">
           <div class="ad-card-title">광고 모집 중 ③</div>
           <div class="ad-card-sub">워싱턴 동문회원이라면 누구나 광고를 게재할 수 있습니다. 합리적인 광고비로 홍보하세요.</div>
-          <a class="ad-card-cta" href="mailto:caudc.alumni@gmail.com?subject=동문광고 문의">광고 문의</a>
+          <a class="ad-card-cta" href="mailto:seunghyuplee@hotmail.com?subject=동문광고 문의">광고 문의</a>
         </div>
       </div>
     </section>
@@ -807,7 +807,7 @@
           <div class="quick-actions">
             ${r.phone&&r.phone!=="nan"?`<a class="small-btn" href="javascript:void(0)" onclick="openLink('${telHref(r.phone)}')">📞 전화</a>`:""}
             ${r.email&&r.email!=="nan"?`<a class="small-btn" href="javascript:void(0)" onclick="openLink('${mailHref(r.email)}')">✉ 이메일</a>`:""}
-            <a class="small-btn" href="javascript:void(0)" onclick="openLink('mailto:caudc.alumni@gmail.com?subject=수정요청-${encodeURIComponent(r.name_kr)}&body=이름:${encodeURIComponent(r.name_kr)}%0A수정내용:')">수정요청</a>
+            <a class="small-btn" href="javascript:void(0)" onclick="openLink('mailto:seunghyuplee@hotmail.com?subject=수정요청-${encodeURIComponent(r.name_kr)}&body=이름:${encodeURIComponent(r.name_kr)}%0A수정내용:')">수정요청</a>
           </div>
           <div class="meta">
             <div class="row"><div class="label">주소</div><div class="value">${t(r.address)}</div></div>
